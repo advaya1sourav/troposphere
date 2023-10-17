@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 withCredentials([
-                string(credentialsId: 'kubernetes', variable: 'api_token')
+                string(credentialsId: 'my_kubernetes', variable: 'api_token')
                 ]) {
 
                 script {
