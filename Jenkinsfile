@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image from your source code
-                    sh " docker build -f Dockerfile.dockerfile .  -t advaya1sourav/spring-app"
+                    bat " docker build -f Dockerfile.dockerfile .  -t advaya1sourav/spring-app"
                 }
             }
         }
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // Log in to your Docker registry (if needed)
-                        sh "docker push advaya1sourav/spring-app"
+                        bat "docker push advaya1sourav/spring-app"
                     }
                 }
             }
