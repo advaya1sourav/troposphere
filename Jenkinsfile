@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image from your source code
-                    dockerImage = docker.build -f Dockerfile.dockerfile -t advaya1sourav/spring-app .
+                    bat 'docker run nginx'
                 }
             }
         }
