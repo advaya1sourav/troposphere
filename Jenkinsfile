@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('mydoctocken')
+        DOCKERHUB_CREDENTIALS = credentials('docker-sourav')
     }
     stages {
         stage('Checkout') {
@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Dockerlogin') {
             steps {
-                bat 'echo dckr_pat_Ag8GzwLUxcbBfU4HvwH8Jf3gzY8 | docker login -u advaya1sourav  --password-stdin'
+                bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR  --password-stdin'
             }
         }
     }
