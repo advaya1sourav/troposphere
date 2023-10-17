@@ -15,14 +15,17 @@ pipeline {
                 bat 'docker login -u advaya1sourav  --password=dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18'
             }
         }
+        
         stage('Build Docker Image') {
             steps {
                 script {
                     // Build the Docker image from your source code
-                    bat "kubectl config view"
+                    withKubeConfig([credentialsId: 'user1', serverUrl: 'https://api.k8s.my-company.com']) {
+                    bat "kubectl kubectl version"
                 }
             }
         }
+        
 
         stage('Push Docker Image') {
             steps {
