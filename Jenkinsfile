@@ -20,31 +20,5 @@ pipeline {
                 }
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build the Docker image from your source code
-                    bat "docker build -f Dockerfile.dockerfile -t advaya1sourav/spring-app ."
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Push the Docker image to the registry
-                    bat "docker push advaya1sourav/spring-app"
-                }
-            }
-        }
-
-        stage('Deploy Image') {
-            steps {
-                script {
-                    // Update the image in your Kubernetes deployment
-                    bat "kubectl set image deployment/spring-app-deployment myspring=advaya1sourav/spring-app"
-                }
-            }
-        }
     }
 }
