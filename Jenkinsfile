@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-  }
+            DOCKER_REGISTRY_CREDENTIALS = credentials('mydoctocken')
+        }
     stages {
         stage('Checkout') {
             steps {
@@ -13,7 +13,8 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image from your source code
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        bat "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD https://hub.docker.com/repository/docker/advaya1sourav"
                 }
             }
         }
@@ -30,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Log in to your Docker registry (if needed)
-                        bat "docker  -u $DOCKER_USERNAME -p $DOCKER_PASSWORD your-docker-registry-url push advaya1sourav/spring-app"
+                        bat "docker push advaya1sourav/spring-app"
                     }
                 }
             }
@@ -43,5 +44,7 @@ pipeline {
                     }
                 }
             }
+     
         }
+    }
 }
