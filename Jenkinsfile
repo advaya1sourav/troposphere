@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Dockerlogin') {
             steps {
-                bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR  --password-stdin'
+                bat 'echo "dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18" | docker login -u $DOCKERHUB_CREDENTIALS_USR  --password-stdin'
             }
         }
     }
