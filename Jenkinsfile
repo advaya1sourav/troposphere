@@ -20,7 +20,17 @@ pipeline {
             steps {
                 script {
                     // Log in to your Docker registry (if needed)
+                        bat "docker login"
                         bat "docker push advaya1sourav/spring-app"
+                    }
+                }
+            }
+        stage('Deploy Image') {
+            steps {
+                script {
+                    // Log in to your Docker registry (if needed)
+                        bat "docker login"
+                        bat "kubectl set image deployment/spring-app-deployment myspring=advay1sourav/spring-app"
                     }
                 }
             }
