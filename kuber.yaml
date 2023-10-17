@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app-deployment
+  labels:
+    app: myspring
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myspring
+  template:
+    metadata:
+      labels:
+        app: myspring
+    spec:
+      containers:
+      - name: myspring
+        image: advaya1sourav/spring-app
+        ports:
+        - containerPort: 8080
