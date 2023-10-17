@@ -26,31 +26,3 @@ pipeline {
             }
         }
 }
-
-
-
-
-
-
-
-        
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Load the Kubernetes configuration from a secret
-                    withKubeConfig(credentialsId: 'your-kubeconfig-credentials-id', kubeconfigContext: 'your-kube-context') {
-                        // Deploy the application to the Kubernetes cluster
-                        sh "kubectl set image deployment/your-deployment-name your-container-name=$DOCKER_IMAGE"
-                    }
-                }
-            }
-        }
-    }
-    
-    post {
-        success {
-            // You can add post-build actions here, such as notifications or cleanup
-            echo 'Deployment successful!'
-        }
-    }
-}
