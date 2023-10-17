@@ -18,14 +18,16 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
+                withCredentials([
+                string(credentialsId: 'kubernetes', variable: 'api_token')
+                ]) {
+
                 script {
-                    // Build the Docker image from your source code
-                    withKubeConfig([credentialsId: 'user1', serverUrl: 'https://api.k8s.my-company.com']) {
-                    bat "kubectl kubectl version"
+                            bat 'kubectl --token $api_token --server https://127.0.0.1:61488 --insecure-skip-tls-verify=true version '
+                }
                 }
             }
         }
-        
 
         stage('Push Docker Image') {
             steps {
