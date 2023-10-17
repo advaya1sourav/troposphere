@@ -23,7 +23,7 @@ pipeline {
                 ]) {
 
                 script {
-                            bat 'kubectl --token $api_token --server https://127.0.0.1:61488 --insecure-skip-tls-verify=true version '
+                            bat 'kubectl --token $api_token --server https://127.0.0.1:64002 --insecure-skip-tls-verify=true version '
                 }
                 }
             }
