@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_REGISTRY_CREDENTIALS = credentials('mydoctocken')
+        DOCKERHUB_CREDENTIALS = credentials('mydoctocken')
     }
     stages {
         stage('Checkout') {
@@ -10,15 +10,9 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/advaya1sourav/myrepooo.git'
             }
         }
-        stage('Docker login') {
+        stage('Dockerlogin') {
             steps {
-                script {
-                    // Log in to your Docker registry
-                     withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')])
-                     {
-                        bat "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD https://hub.docker.com"
-                    }
-                }
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR  --password-stdin'
             }
         }
     }
