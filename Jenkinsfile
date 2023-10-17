@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     // Push the Docker image to the registry
-                    bat "docker push advaya1sourav/spring-app"
+                    bat "kubectl version"
                 }
             }
         }
