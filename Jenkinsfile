@@ -14,7 +14,8 @@ pipeline {
             steps {
                 script {
                     // Log in to your Docker registry
-                    withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                     withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')])
+                     {
                         bat "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD https://hub.docker.com"
                     }
                 }
