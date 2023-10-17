@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image from your source code
-                    bat "kubectl version"
+                    bat "kubectl get all"
                 }
             }
         }
