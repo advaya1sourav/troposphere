@@ -30,10 +30,10 @@ pipeline {
     stage('K8S Deploy') {
       steps{   
         script {
-            withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
-            sh "kubectl set image deployment/spring-app-deployment myspring=advaya1sourav/spring-app"
+           withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
+           sh "kubectl set image deployment/spring-app-deployment myspring=advaya1sourav/spring-app"
             }
-        }
+          }
         }
        }
     }
