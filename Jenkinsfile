@@ -16,7 +16,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          sh "docker build -f Dockerfile.dockerfile -t advaya1sourav/spring-app ."
+          sh "docker build -f Dockerfile.dockerfile -t advaya1sourav/spring-app1 ."
         }
       }
     }
