@@ -16,14 +16,14 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          sh "docker build -f Dockerfile.dockerfile -t advaya1sourav/spring-app1 ."
+          sh "docker build -f Dockerfile.dockerfile -t advaya1sourav/spring-app2 ."
         }
       }
     }
     stage('pushing image') {
       steps{
         script {
-          sh "docker push advaya1sourav/spring-app1"
+          sh "docker push advaya1sourav/spring-app2"
         }
       }
     }    
@@ -31,7 +31,7 @@ pipeline {
       steps{   
         script {
            withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
-            sh ('kubectl set image deployment/spring-app-deployment myspring=advaya1sourav/spring-app1')
+            sh ('kubectl set image deployment/spring-app-deployment myspring=advaya1sourav/spring-app2')
             }
           }
         }
