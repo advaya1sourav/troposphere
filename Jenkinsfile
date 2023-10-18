@@ -23,8 +23,8 @@ pipeline {
                 ]){
 
                 script {
-                    // Build the Docker image from your source code
-                            sh 'kubectl version '
+                withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
+                sh ('kubectl version')
                 }
                 }
             }
