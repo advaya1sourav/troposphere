@@ -12,18 +12,34 @@ pipeline {
         }
         stage('Dockerlogin') {
             steps {
-                sh 'docker login -u advaya1sourav  --password=dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18'
+                bat 'docker login -u advaya1sourav  --password=dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18'
             }
         }
-
-       stage('K8S Deploy') {
-        steps{   
-            script {
-                withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
-                sh ('kubectl version')
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image from your source code
+                    sh "docker build -f Dockerfile.dockerfile -t advaya1sourav/spring-app ."
                 }
             }
         }
-       }
-    }  
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Push the Docker image to the registry
+                    sh "docker push advaya1sourav/spring-app"
+                }
+            }
+        }
+
+        stage('Deploy Image') {
+            steps {
+                script {
+                    withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
+                    sh ('kubectl version')
+                }
+            }
+        }
+    }
 }
