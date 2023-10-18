@@ -23,7 +23,7 @@ pipeline {
     stage('pushing image') {
       steps{
         script {
-          sh "docker push advaya1sourav/spring-app"
+          sh "docker push advaya1sourav/spring-app1"
         }
       }
     }    
@@ -31,8 +31,7 @@ pipeline {
       steps{   
         script {
            withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
-            sh ('kubectl apply  -f /tmp/kuber.yml')
-            sh ('kubectl apply  -f /tmp/service.yaml')
+            sh ('kubectl set image deployment/spring-app-deployment myspring=advaya1sourav/spring-app1')
             }
           }
         }
