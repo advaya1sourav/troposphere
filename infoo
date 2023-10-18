@@ -1,0 +1,48 @@
+
+
+step : 1 : clone the repo    
+
+
+git clone https://github.com/spring-projects/spring-petclinic.git .
+
+
+
+ docker build -f Dockerfile.dockerfile .  -t advaya1sourav/spring-app
+
+ docker push  advay1sourav/spring-app
+
+kubectl apply  -f kuber.yaml
+kubectl apply  -f service.yaml
+
+
+advaya1sourav
+Infinite@99
+
+
+
+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
+
+
+
+dockertoc
+docker login -u advaya1sourav
+dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18
+
+
+
+docker login -u %MY_USERNAME%  --password=%MY_PASSWORD%
+
+
+https://www.youtube.com/watch?v=fodA9rM5xoo
+
+
+
+
+
+"net start servicename" to start
+
+"net restart servicename" to restart
+
+"net stop servicename" to stop service
+
+ https://github.com/advaya1sourav/myrepooo.git +refs/heads/
