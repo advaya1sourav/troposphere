@@ -1,56 +1,28 @@
 pipeline {
     agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-sourav')
+    }
     stages {
         stage('Checkout') {
             steps {
+                // Checkout the source code from your Git repository
                 git branch: 'main', url: 'https://github.com/advaya1sourav/myrepooo.git'
             }
         }
-        
-        stage('Build Docker Image') {
+        stage('Dockerlogin') {
             steps {
-                script {
-                    // Build the Docker image from your source code
-                    sh " docker build -f Dockerfile.dockerfile .  -t advaya1sourav/spring-app"
-                }
+                bat 'docker login -u advaya1sourav  --password=dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18'
             }
         }
-        
-        stage('Push Docker Image') {
+
+        stage('Deploy Image') {
             steps {
                 script {
-                    // Log in to your Docker registry (if needed)
-                        sh "docker push advaya1sourav/spring-app"
-                    }
+                    // Update the image in your Kubernetes deployment
+                    bat "kubectl version"
                 }
             }
-        }
-}
-
-
-
-
-
-
-
-        
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Load the Kubernetes configuration from a secret
-                    withKubeConfig(credentialsId: 'your-kubeconfig-credentials-id', kubeconfigContext: 'your-kube-context') {
-                        // Deploy the application to the Kubernetes cluster
-                        sh "kubectl set image deployment/your-deployment-name your-container-name=$DOCKER_IMAGE"
-                    }
-                }
-            }
-        }
-    }
-    
-    post {
-        success {
-            // You can add post-build actions here, such as notifications or cleanup
-            echo 'Deployment successful!'
         }
     }
 }
