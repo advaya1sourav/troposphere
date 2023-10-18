@@ -16,13 +16,19 @@ pipeline {
             }
         }
 
-        stage('Deploy Image') {
+        stage('Build Docker Image') {
             steps {
+                withCredentials([
+                string(credentialsId: 'mykube', variable: 'api_token')
+                ]){
+
                 script {
-                    // Update the image in your Kubernetes deployment
-                    bat "kubectl version"
+                    // Build the Docker image from your source code
+                            bat 'kubectl --token $api_token --https://192.168.59.101:8443 --insecure-skip-tls-verify=true version '
+                }
                 }
             }
         }
+    }         
     }
 }
