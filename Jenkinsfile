@@ -19,12 +19,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 withCredentials([
-                string(credentialsId: 'my_kubernetes', variable: 'api_token')
+                string(credentialsId: 'jenkins-kind', variable: 'api_token')
                 ]) {
 
                 script {
-                            bat 'kubectl --token $api_token --server https://127.0.0.1:64002 --insecure-skip-tls-verify=true version'
-                            bat 'kubectl --token $api_token --server https://127.0.0.1:64002 --insecure-skip-tls-verify=true run nginx --image=nginx'
+                            bat 'kubectl --token $api_token --server  https://192.168.59.101:8443 --insecure-skip-tls-verify=true version'
+                            bat 'kubectl --token $api_token --server  https://192.168.59.101:8443 --insecure-skip-tls-verify=true run nginx --image=nginx'
                 }
                 }
             }
