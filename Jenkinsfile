@@ -23,8 +23,8 @@ pipeline {
                 ]) {
 
                 script {
-                            bat 'kubectl --token $api_token --server  https://192.168.59.101:8443 --insecure-skip-tls-verify=true version'
-                            bat 'kubectl --token $api_token --server  https://192.168.59.101:8443 --insecure-skip-tls-verify=true run nginx --image=nginx'
+                        
+                            bat 'kubectl --token run nginx --image=nginx'
                 }
                 }
             }
