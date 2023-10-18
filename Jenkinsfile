@@ -24,7 +24,7 @@ pipeline {
 
                 script {
                         
-                            bat 'kubectl --token run nginx --image=nginx'
+                            bat 'kubectl run nginx --image=nginx'
                 }
                 }
             }
