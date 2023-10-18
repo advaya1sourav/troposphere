@@ -1,38 +1,28 @@
 pipeline {
-  agent {
-    kubernetes {
-      yaml '''
-        apiVersion: v1
-        kind: Pod
-        spec:
-          containers:
-          - name: maven
-            image: maven:alpine
-            command:
-            - cat
-            tty: true
-          - name: node
-            image: node:16-alpine3.12
-            command:
-            - cat
-            tty: true
-        '''
+    agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-sourav')
     }
-  }
-  stages {
-    stage('Run maven') {
-      steps {
-        container('maven') {
-          sh 'mvn -version'
-          sh ' echo Hello World > hello.txt'
-          sh 'ls -last'
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from your Git repository
+                git branch: 'main', url: 'https://github.com/advaya1sourav/myrepooo.git'
+            }
         }
-        container('node') {
-          sh 'npm version'
-          sh 'cat hello.txt'
-          sh 'ls -last'
+        stage('Dockerlogin') {
+            steps {
+                bat 'docker login -u advaya1sourav  --password=dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18'
+            }
         }
-      }
+
+        stage('Deploy Image') {
+            steps {
+                script {
+                    // Update the image in your Kubernetes deployment
+                    bat "kubectl version"
+                }
+            }
+        }
     }
-  }
 }
