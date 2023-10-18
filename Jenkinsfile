@@ -1,46 +1,50 @@
 pipeline {
+   tools {
+        maven 'Maven3'
+    }
     agent any
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker-sourav')
+        registry = "account_id.dkr.ecr.us-east-2.amazonaws.com/my-docker-repo"
     }
+   
     stages {
-        stage('Checkout') {
+        stage('Cloning Git') {
             steps {
-                // Checkout the source code from your Git repository
-                git branch: 'main', url: 'https://github.com/advaya1sourav/myrepooo'
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/springboot-app']]])     
             }
         }
-        stage('Dockerlogin') {
-            steps {
-                bat 'docker login -u advaya1sourav  --password=dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18'
+      stage ('Build') {
+          steps {
+            sh 'mvn clean install'           
             }
+      }
+    // Building Docker images
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry 
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build the Docker image from your source code
-                    sh "docker build -f Dockerfile.dockerfile -t advaya1sourav/spring-app ."
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Push the Docker image to the registry
-                    sh "docker push advaya1sourav/spring-app"
-                }
-            }
-        }
-
-        stage('Deploy Image') {
-            steps {
-                script {
-                    withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
-                    sh ('kubectl version')
-                }
-            }
-        }
+      }
     }
-}
+   
+    // Uploading Docker images into AWS ECR
+    stage('Pushing to ECR') {
+     steps{  
+         script {
+                sh 'aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin account_id.dkr.ecr.us-east-2.amazonaws.com'
+                sh 'docker push account_id.dkr.ecr.us-east-2.amazonaws.com/my-docker-repo:latest'
+         }
+        }
+      }
+
+       stage('K8S Deploy') {
+        steps{   
+            script {
+                withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
+                sh ('kubectl apply -f  eks-deploy-k8s.yaml')
+                }
+            }
+        }
+       }
+    }
 }
