@@ -1,44 +1,31 @@
 pipeline {
     agent any
-    environment {
-        registry = "account_id.dkr.ecr.us-east-2.amazonaws.com/my-docker-repo"
-    }
    
     stages {
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/springboot-app']]])     
+                checkout([$class: 'GitSCM', branches: [[name: '*/test']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/advaya1sourav/myrepooo']]])     
             }
         }
-      stage ('Build') {
+      stage ('Login') {
           steps {
-            sh 'mvn clean install'           
+            sh 'docker login -u advaya1sourav  --password=dckr_pat_CUKiP_kUQfWkYWXQDKr8caRTk18'           
             }
       }
     // Building Docker images
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry 
+          sh "docker build -f Dockerfile.dockerfile -t advaya1sourav/spring-app ."
         }
       }
     }
-   
-    // Uploading Docker images into AWS ECR
-    stage('Pushing to ECR') {
-     steps{  
-         script {
-                sh 'aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin account_id.dkr.ecr.us-east-2.amazonaws.com'
-                sh 'docker push account_id.dkr.ecr.us-east-2.amazonaws.com/my-docker-repo:latest'
-         }
-        }
-      }
 
        stage('K8S Deploy') {
         steps{   
             script {
                 withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
-                sh ('kubectl apply -f  eks-deploy-k8s.yaml')
+                sh ('kubectl version')
                 }
             }
         }
