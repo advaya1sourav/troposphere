@@ -20,7 +20,7 @@ pipeline {
         }
       }
     }
-    stage('Building image') {
+    stage('pushing image') {
       steps{
         script {
           sh "docker push advaya1sourav/spring-app"
