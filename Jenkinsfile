@@ -24,7 +24,7 @@ pipeline {
 
                 script {
                         
-                            bat 'kubectl version'
+                            bat 'kubectl get all'
                 }
                 }
             }
