@@ -16,19 +16,14 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                withCredentials([
-                string(credentialsId: 'mykube', variable: 'api_token')
-                ]){
-
-                script {
+       stage('K8S Deploy') {
+        steps{   
+            script {
                 withKubeConfig([credentialsId: 'K8S', serverUrl: '']) {
-                sh ('kubectl version')
-                }
+                sh ('kubectl apply -f  eks-deploy-k8s.yaml')
                 }
             }
         }
-    }         
-
+       }
+    }  
 }
